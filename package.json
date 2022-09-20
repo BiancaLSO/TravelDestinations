@@ -1,7 +1,7 @@
 {
   "name": "traveldestinations",
   "version": "1.0.0",
-  "description": "Travel Destination",
+  "description": "# Since TravelDestinations runs on NodeJs and Express, make sure you have Node and Express installed",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
