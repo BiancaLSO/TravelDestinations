@@ -1,0 +1,19 @@
+{
+  "name": "traveldestinations",
+  "version": "1.0.0",
+  "description": "Travel Destination",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BiancaLSO/TravelDestinations.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BiancaLSO/TravelDestinations/issues"
+  },
+  "homepage": "https://github.com/BiancaLSO/TravelDestinations#readme"
+}
