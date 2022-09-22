@@ -1,5 +1,6 @@
 //connection to database
 const mongodb = require("mongodb").MongoClient;
+const ObjectId = require("mongodb").ObjectId;
 const uri = "mongodb+srv://traveldestinations:traveldestinations1234@travelcluster.xpbsjto.mongodb.net/destinations";
 const client = new mongodb(uri);
 const path = require("path");
@@ -53,6 +54,56 @@ app.post("/", (req, res) => {
     img: req.body.img,
   };
   addAnObject(myObject).catch(console.dir);
+  // findId();
+});
+
+// app.get("/", function (req, res) {
+//   const database = client.db("TravelDestinations");
+//   const names = database.collection("destinations");
+//   database
+//     .collection("destinations")
+//     .find()
+//     .toArray(function (err, items) {
+//       res.send(items[0]._id);
+//     });
+// });
+app.get("/:myID", function (req, res) {
+  const database = client.db("TravelDestinations");
+  const names = database.collection("destinations");
+  console.log(req.params.myID);
+  database
+    .collection("destinations")
+    .find({ _id: new ObjectId(req.params.myID) })
+    .toArray(function (err, items) {
+      res.send(items[0]);
+    });
+
+  // res.status(200).json({ info: "we got GET request" });
+});
+app.put("/:myID", function (req, res) {
+  console.log(req.params.destinationId);
+
+  // dataBaseId === req.params.destinationId
+  const database = client.db("TravelDestinations");
+  const names = database.collection("destinations");
+  database
+    .collection("destinations")
+    .find()
+    .toArray(function (err, items) {
+      res.send(items[0]._id);
+
+      // req.params.myID = items[0]._id;
+      // const myObject = {
+      //   name: items[0].name,
+      //   location: items[0].location,
+      //   startDate: items[0].startDate,
+      //   endDate: items[0].endDate,
+      //   description: items[0].description,
+      //   img: items[0].img,
+      // };
+    });
+
+  res.status(200).json({ info: "we got PUT request" });
 });
 
 app.listen(port, () => {
