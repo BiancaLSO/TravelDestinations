@@ -1,8 +1,10 @@
 //connection to database
-const mongodb = require("mongodb").MongoClient;
+const mongoose = require("mongoose");
+mongoose.connect("mongodb+srv://traveldestinations:traveldestinations1234@travelcluster.xpbsjto.mongodb.net/destinations").catch((error) => console.log(error));
+const schema = mongoose.Schema;
 const ObjectId = require("mongodb").ObjectId;
 const uri = "mongodb+srv://traveldestinations:traveldestinations1234@travelcluster.xpbsjto.mongodb.net/destinations";
-const client = new mongodb(uri);
+// const client = new mongodb(uri);
 const path = require("path");
 
 const bodyParser = require("body-parser");
@@ -16,6 +18,16 @@ const port = 8082;
 var cors = require("cors");
 app.use(cors());
 
+//our Schema
+
+const destinationSchema = new schema({
+  name: { type: String },
+  location: { type: String },
+  startDate: { type: Date },
+  endDate: { type: Date },
+  description: { type: String },
+  img: { type: String },
+});
 //parser for body
 app.use(express.json());
 app.use(bodyParser.json());
@@ -45,15 +57,20 @@ app.get("/", (req, res) => {
 app.post("/", (req, res) => {
   res.status(200).json({ info: "we got POST request" });
   console.log(req.body);
-  const myObject = {
+  const myModel = mongoose.model("Destination", destinationSchema);
+  const myObejct = new myModel({
     name: req.body.name,
     location: req.body.location,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
     description: req.body.description,
     img: req.body.img,
-  };
-  addAnObject(myObject).catch(console.dir);
+  });
+  myObejct.save(function (err) {
+    if (err) console.log(err);
+    //   res.status(201).json(Kitty);
+  });
+  // addAnObject(myObject).catch(console.dir);
   // findId();
 });
 
