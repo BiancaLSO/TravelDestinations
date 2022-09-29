@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="../public/styling/style.css" />
+    <title>Update</title>
+  </head>
+  <body>
+    <section id="updateFormContainer">
+      <h1>Update the current post</h1>
+      <h3>Changes will be applied and showed on the main page</h3>
+      <form id="updateForm">
+        <label for="name">
+          Name:
+          <input name="name" type="text" id="name" placeholder="Destination name" required />
+        </label>
+        <label for="location">
+          Location:
+          <input name="location" type="text" id="location" placeholder="Location" required />
+        </label>
+        <label for="startDate">
+          Start Date:
+          <input name="startDate" type="date" id="startDate" placeholder="Start date" required />
+        </label>
+        <label for="endDate">
+          End Date:
+          <input name="endDate" type="date" id="endDate" placeholder="End date" required />
+        </label>
+        <label for="description">
+          Description:
+          <input name="description" type="textarea" id="description" placeholder="Description of the place" required />
+        </label>
+        <label for="img">
+          Image:
+          <input name="img" type="file" id="img" placeholder="Upload your image" />
+        </label>
+        <input type="submit" name="submit" id="submit" value="Update" />
+      </form>
+    </section>
+    >
+    <script src="./public/javascript/update-script.js"></script>
+  </body>
+</html>
