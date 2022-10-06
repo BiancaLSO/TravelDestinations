@@ -89,6 +89,7 @@ app.post("/", (req, res) => {
   addAnObject(myObject).catch(console.dir);
 });
 
+// requests for Update form
 app.get("/:myID", function (req, res) {
   const destinationModel = mongoose.model("Destination", destinationSchema);
   const destination = destinationModel.findOne({ _id: req.params.myID }, function (err, destination) {
@@ -118,6 +119,15 @@ app.put("/:myID", function (req, res) {
   destinationModel.findOneAndUpdate({ _id: req.params.myID }, destination, (err, result) => {
     if (err) res.status(422).json(err);
     else res.status(200).json({ message: "Update success" });
+  });
+});
+
+// request for Deleting
+app.delete("/:myID", function (req, res) {
+  const destinationModel = mongoose.model("Destination", destinationSchema);
+  destinationModel.findOneAndDelete({ _id: req.params.myID }, (err, result) => {
+    if (err) res.status(422).json(err);
+    else res.status(200).json({ message: "Delete success" });
   });
 });
 
