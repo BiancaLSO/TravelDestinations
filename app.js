@@ -89,6 +89,38 @@ app.post("/", (req, res) => {
   addAnObject(myObject).catch(console.dir);
 });
 
+app.get("/:myID", function (req, res) {
+  const destinationModel = mongoose.model("Destination", destinationSchema);
+  const destination = destinationModel.findOne({ _id: req.params.myID }, function (err, destination) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Result: ", destination);
+      res.status(200).json(destination);
+    }
+  });
+});
+app.put("/:myID", function (req, res) {
+  console.log(req.params.myID);
+  const destination = {
+    name: req.body.name,
+    location: req.body.location,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+    description: req.body.description,
+    img: req.body.img,
+  };
+  destination._id = req.params.myID;
+
+  console.log(destination);
+
+  const destinationModel = mongoose.model("Destination", destinationSchema);
+  destinationModel.findOneAndUpdate({ _id: req.params.myID }, destination, (err, result) => {
+    if (err) res.status(422).json(err);
+    else res.status(200).json({ message: "Update success" });
+  });
+});
+
 // endpoint for Sign Up
 app.post("/auth/signup", (req, res) => {
   const user = new userModel({
@@ -115,45 +147,6 @@ app.get("/auth/login", (req, res) => {
     }
   });
 });
-
-// app.get("/:myID", function (req, res) {
-//   const database = client.db("TravelDestinations");
-//   const names = database.collection("destinations");
-//   console.log(req.params.myID);
-//   database
-//     .collection("destinations")
-//     .find({ _id: new ObjectId(req.params.myID) })
-//     .toArray(function (err, items) {
-//       res.send(items[0]);
-//     });
-
-//   // res.status(200).json({ info: "we got GET request" });
-// });
-// app.put("/:myID", function (req, res) {
-//   console.log(req.params.destinationId);
-
-//   // dataBaseId === req.params.destinationId
-//   const database = client.db("TravelDestinations");
-//   const names = database.collection("destinations");
-//   database
-//     .collection("destinations")
-//     .find()
-//     .toArray(function (err, items) {
-//       res.send(items[0]._id);
-
-//       // req.params.myID = items[0]._id;
-//       // const myObject = {
-//       //   name: items[0].name,
-//       //   location: items[0].location,
-//       //   startDate: items[0].startDate,
-//       //   endDate: items[0].endDate,
-//       //   description: items[0].description,
-//       //   img: items[0].img,
-//       // };
-//     });
-
-//   res.status(200).json({ info: "we got PUT request" });
-// });
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

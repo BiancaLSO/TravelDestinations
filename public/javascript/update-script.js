@@ -17,6 +17,7 @@ function getIdFromUrl() {
   return splitIdParam[1];
 }
 function fillInTheForm(destination) {
+  console.log(destination);
   document.querySelector("#name").value = destination.name;
   document.querySelector("#location").value = destination.location;
   document.querySelector("#startDate").value = destination.startDate;
@@ -40,7 +41,9 @@ myform.addEventListener("submit", (event) => {
   putData(id, destination);
 });
 async function getSpecificDestination(id) {
+  console.log("i am in get destination");
   const response = await fetch(url + id);
+  console.log(response);
   const body = await response.json();
   console.log(body);
   return body;
