@@ -4,16 +4,26 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="../public/styling/signup.css" />
     <title>Sign up</title>
   </head>
   <body>
+    <section id="signUpContainer">
     <form>
+      <h1>Sign Up</h1>
+      <label for="name"> Full Name:</label>
+      <input name="name" type="text" id="name" placeholder=" Full name" required />
       <label for="username">Username:</label>
-      <input name="username" type="text" id="username" />
+      <input name="username" type="text" id="username" placeholder="Username" required />
+      <label for="email">Email:</label>
+      <input name="email" type="text" id="email" placeholder="Email" required/>
       <label for="password">Password:</label>
-      <input name="password" type="text" id="password" />
-      <input type="submit" value="sign up" id="signUp" />
+      <input name="password" type="text" id="password" placeholder="Password" required />
+      <label for="confirmpassword">Confirm Password:</label>
+      <input name="confirmpassword" type="text" id="confirmpassword" placeholder="Confirm password" required />
+      <input type="submit" value="Sign up" id="signUp" />
     </form>
+    </section>
     <script src="../public/javascript/sign-up.js"></script>
     <script src="../app.js"></script>
   </body>
