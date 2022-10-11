@@ -39,3 +39,21 @@ input[type="submit"] {
   color: white;
   cursor: pointer;
 }
+.hidden {
+  visibility: hidden;
+}
+.modal {
+  background-color: rgb(2, 2, 81);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  padding: 3vw;
+  border-radius: 1vw;
+  text-align: center;
+}
+.modal h1 {
+  color: white;
+}

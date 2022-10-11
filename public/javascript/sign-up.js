@@ -8,9 +8,9 @@ document.querySelector("#signUp").addEventListener("click", async (event) => {
   };
   const response = await postUser(user);
   console.log(response);
-  //   if (response.status === 200) {
-  //     clearForm();
-  //   }
+  if (response.status === 200) {
+    window.location.replace("/views/index.html");
+  }
 });
 async function postUser(user) {
   console.log(user);

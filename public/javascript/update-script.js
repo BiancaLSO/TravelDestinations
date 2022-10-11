@@ -26,7 +26,7 @@ function fillInTheForm(destination) {
   document.querySelector("#img").value = destination.img;
 }
 const myform = document.querySelector("#updateForm");
-myform.addEventListener("submit", (event) => {
+myform.addEventListener("submit", async (event) => {
   event.preventDefault();
   console.log("hey it is submited");
   const destination = {
@@ -38,8 +38,24 @@ myform.addEventListener("submit", (event) => {
     img: document.querySelector("#img").value,
   };
   const id = getIdFromUrl();
-  putData(id, destination);
+  const response = await putData(id, destination);
+  console.log(response);
+  if (response.status === 200) {
+    clearForm();
+  }
 });
+function clearForm() {
+  document.querySelector("#name").value = "";
+  document.querySelector("#location").value = "";
+  document.querySelector("#startDate").value = "";
+  document.querySelector("#endDate").value = "";
+  document.querySelector("#description").value = "";
+  document.querySelector("#img").value = "";
+  document.querySelector("#confirmationModalUpdate").classList.remove("hidden");
+  setTimeout(() => {
+    document.querySelector("#confirmationModalUpdate").classList.add("hidden");
+  }, "2000");
+}
 async function getSpecificDestination(id) {
   console.log("i am in get destination");
   const response = await fetch(url + id);

@@ -13,14 +13,16 @@
     <section id="createFormContainer">
       <h1>Create a new travel destination</h1>
       <h3>This destination will be shown on our Travel destinations main page</h3>
-      <form id="createForm">
+      <form id="createForm" novalidate>
         <label for="name">
           Name:
-          <input name="name" type="text" id="name" placeholder="Destination name" required />
+          <input name="name" type="text" id="name" placeholder="Destination name" required minlength="3" />
+          <span class="error" aria-live="polite"></span>
         </label>
         <label for="location">
           Location:
-          <input name="location" type="text" id="location" placeholder="Location" required />
+          <input name="location" type="text" id="location" placeholder="Location" required minlength="3" />
+          <span class="error" aria-live="polite"></span>
         </label>
         <label for="startDate">
           Start Date:
@@ -32,7 +34,8 @@
         </label>
         <label for="description">
           Description:
-          <input name="description" type="textarea" id="description" placeholder="Description of the place" required />
+          <input name="description" type="textarea" id="description" placeholder="Description of the place" required minlength="10" />
+          <span class="error" aria-live="polite"></span>
         </label>
         <label for="img">
           Image:
@@ -41,6 +44,9 @@
         <input type="submit" name="submit" id="submit" value="Create" />
       </form>
     </section>
+    <div id="confirmationModalCreate" class="modal hidden">
+      <h1>Your travel destination was created succesfully!</h1>
+    </div>
   </body>
   <script src="/public/javascript/create-script.js"></script>
 </html>
