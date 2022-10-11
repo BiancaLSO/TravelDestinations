@@ -1,4 +1,5 @@
 //connection to database
+
 const mongoose = require("mongoose");
 
 async function main() {
@@ -141,8 +142,7 @@ app.post("/auth/signup", (req, res) => {
     if (err) console.log(err);
     console.log(user);
   });
-
-  // res.status(200).json(token);
+  res.status(200).json({ info: "we got POST request" });
 });
 app.get("/auth/login", (req, res) => {
   userModel.findOne({ username: req.body.username, password: req.body.password }, (err, user) => {
@@ -156,6 +156,11 @@ app.get("/auth/login", (req, res) => {
       // res.status(200).
     }
   });
+});
+// middlewear
+app.use((req, res, next) => {
+  req.username;
+  next();
 });
 
 app.listen(port, () => {
