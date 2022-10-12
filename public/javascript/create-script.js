@@ -89,8 +89,8 @@ form.addEventListener("submit", async (event) => {
     const destination = {
       name: document.querySelector("#name").value,
       location: document.querySelector("#location").value,
-      startDate: document.querySelector("#startDate").value,
-      endDate: document.querySelector("#endDate").value,
+      startDate: new Date(document.querySelector("#startDate").value).toISOString().slice(0, 10),
+      endDate: new Date(document.querySelector("#endDate").value).toISOString().slice(0, 10),
       description: document.querySelector("#description").value,
       img: document.querySelector("#img").value,
     };

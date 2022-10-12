@@ -20,10 +20,10 @@ function fillInTheForm(destination) {
   console.log(destination);
   document.querySelector("#name").value = destination.name;
   document.querySelector("#location").value = destination.location;
-  document.querySelector("#startDate").value = destination.startDate;
-  document.querySelector("#endDate").value = destination.endDate;
+  document.querySelector("#startDate").value = new Date(destination.startDate).toISOString().slice(0, 10);
+  document.querySelector("#endDate").value = new Date (destination.endDate).toISOString().slice(0, 10);
   document.querySelector("#description").value = destination.description;
-  document.querySelector("#img").value = destination.img;
+  document.querySelector("#img").src = destination.img;
 }
 const myform = document.querySelector("#updateForm");
 myform.addEventListener("submit", async (event) => {
@@ -32,10 +32,10 @@ myform.addEventListener("submit", async (event) => {
   const destination = {
     name: document.querySelector("#name").value,
     location: document.querySelector("#location").value,
-    startDate: document.querySelector("#startDate").value,
-    endDate: document.querySelector("#endDate").value,
+    startDate: new Date(document.querySelector("#startDate").value).toISOString().slice(0, 10),
+    endDate: new Date (document.querySelector("#endDate").value).toISOString().slice(0, 10),
     description: document.querySelector("#description").value,
-    img: document.querySelector("#img").value,
+    img: document.querySelector("#img").src,
   };
   const id = getIdFromUrl();
   const response = await putData(id, destination);
