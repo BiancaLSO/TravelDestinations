@@ -4,17 +4,22 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="../public/styling/login.css" />
     <title>Log in</title>
   </head>
   <body>
-    <h1>This is login</h1>
-    <form>
-      <label for="username">Username:</label>
-      <input name="username" type="text" id="username" />
-      <label for="password">Password:</label>
-      <input name="password" type="text" id="password" />
-      <input type="button" value="log in" id="logIn" />
-    </form>
+    <div class="background-image">
+        <section id="signInContainer">
+            <form>
+              <h1>Log in</h1>
+              <label for="username">Username:</label>
+              <input name="username" type="text" id="username" placeholder="Username" required />
+              <label for="password">Password:</label>
+              <input name="password" type="text" id="password" placeholder="Password" required />
+              <input type="submit" value="Log in" id="logIn" />
+            </form>
+        </section>
+    </div>
     <script type="module" src="../public/javascript/log-in.js"></script>
     <script type="module" src="../app.js"></script>
   </body>
