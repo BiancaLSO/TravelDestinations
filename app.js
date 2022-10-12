@@ -51,7 +51,7 @@ userModel.createCollection().then(function (collection) {
 //parser for body
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 //inserts an object to my mongo
 async function addAnObject(myObject) {

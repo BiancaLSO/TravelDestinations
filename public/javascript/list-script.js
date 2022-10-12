@@ -38,8 +38,8 @@ function fillDestTemplate(dest) {
   //   clone.querySelector("#temp").id = contact.id;
   clone.querySelector("#nameDestination").textContent = dest.name;
   clone.querySelector("#locationDestination").textContent = dest.location;
-  clone.querySelector("#startDateDestination").textContent = dest.startDate;
-  clone.querySelector("#endDateDestination").textContent = dest.endDate;
+  clone.querySelector("#startDateDestination").textContent = new Date(dest.startDate).toISOString().slice(0, 10);
+  clone.querySelector("#endDateDestination").textContent = new Date(dest.endDate).toISOString().slice(0, 10);
   clone.querySelector("#descriptionDestination").textContent = dest.description;
   clone.querySelector("#imgDestination").src = dest.img;
   clone.querySelector("#delete-button").id = dest._id;
