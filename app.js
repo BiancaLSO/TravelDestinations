@@ -1,9 +1,14 @@
-//connection to database
+// import package for Mongoose Validation
+const { isEmail } = require("validator");
+const { isDate } = require("validator");
 
+//connection to database
 const mongoose = require("mongoose");
 
 async function main() {
-  await mongoose.connect("mongodb+srv://traveldestinations:traveldestinations1234@travelcluster.xpbsjto.mongodb.net/TravelDestinations");
+  await mongoose.connect(
+    "mongodb+srv://traveldestinations:traveldestinations1234@travelcluster.xpbsjto.mongodb.net/TravelDestinations"
+  );
   // const connection = mongoose.connection;
 }
 
@@ -30,23 +35,82 @@ var jwt = require("jsonwebtoken");
 
 //our destination Schema
 const destinationSchema = new schema({
-  name: { type: String },
-  location: { type: String },
-  startDate: { type: Date },
-  endDate: { type: Date },
-  description: { type: String },
+  name: {
+    type: String,
+    required: [true, "Please enter a article name"],
+    unique: true,
+  },
+  location: { type: String, required: [true, "Please enter a location name"] },
+  startDate: {
+    type: Date,
+    required: [true, "Please enter a start date for the trip"],
+    validate: [isDate, "Please enter the correct date format: YYYY/MM/DD"],
+  },
+  endDate: {
+    type: Date,
+    required: [true, "Please enter an end date for the trip"],
+    validate: [isDate, "Please enter the correct date format: YYYY/MM/DD"],
+  },
+  description: {
+    type: String,
+    required: [true, "Please enter a description about the trip"],
+  },
   img: { type: String },
 });
 
 //our user Schema
 const userSchema = new schema({
-  username: { type: String },
-  password: { type: String },
+  username: {
+    type: String,
+    required: [true, "Please enter a valid username"],
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: [true, "Please enter your password"],
+    unique: true,
+    minlength: [8, "Minimum password length is 8 characters"],
+  },
 });
 const userModel = mongoose.model("User", userSchema);
 userModel.createCollection().then(function (collection) {
   console.log("Collection is created!");
 });
+
+// User Scehma for creating the User Model
+// const userSchema = new schema({
+//   firstName: {
+//     type: String,
+//     required: [true, "Please enter your name"],
+//   },
+//   lastName: {
+//     type: String,
+//     required: [true, "Please enter your surname"],
+//   },
+//   email: {
+//     type: String,
+//     required: [true, "Please enter an email account"],
+//     unique: true,
+//     lowercase: true,
+//     validate: [isEmail, "Please enter a valid email account"],
+//   },
+
+//   username: {
+//     type: String,
+//     required: [true, "Please enter a valid username"],
+//     unique: true,
+//   },
+//   password: {
+//     type: String,
+//     required: [true, "Please enter your password"],
+//     unique: true,
+//     minlength: [8, "Minimum password length is 8 characters"],
+//   },
+// });
+// const userModel = mongoose.model("User", userSchema);
+// userModel.createCollection().then(function (collection) {
+//   console.log("Collection is created!");
+// });
 
 //parser for body
 app.use(express.json());
@@ -93,14 +157,17 @@ app.post("/", (req, res) => {
 // requests for Update form
 app.get("/:myID", function (req, res) {
   const destinationModel = mongoose.model("Destination", destinationSchema);
-  const destination = destinationModel.findOne({ _id: req.params.myID }, function (err, destination) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Result: ", destination);
-      res.status(200).json(destination);
+  const destination = destinationModel.findOne(
+    { _id: req.params.myID },
+    function (err, destination) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Result: ", destination);
+        res.status(200).json(destination);
+      }
     }
-  });
+  );
 });
 app.put("/:myID", function (req, res) {
   console.log(req.params.myID);
@@ -117,10 +184,14 @@ app.put("/:myID", function (req, res) {
   console.log(destination);
 
   const destinationModel = mongoose.model("Destination", destinationSchema);
-  destinationModel.findOneAndUpdate({ _id: req.params.myID }, destination, (err, result) => {
-    if (err) res.status(422).json(err);
-    else res.status(200).json({ message: "Update success" });
-  });
+  destinationModel.findOneAndUpdate(
+    { _id: req.params.myID },
+    destination,
+    (err, result) => {
+      if (err) res.status(422).json(err);
+      else res.status(200).json({ message: "Update success" });
+    }
+  );
 });
 
 // request for Deleting
@@ -145,17 +216,20 @@ app.post("/auth/signup", (req, res) => {
   res.status(200).json({ info: "we got POST request" });
 });
 app.get("/auth/login", (req, res) => {
-  userModel.findOne({ username: req.body.username, password: req.body.password }, (err, user) => {
-    if (err) {
-      console.log(err);
-    } else {
-      const token = jwt.sign({ _id: user._id }, "secretkey");
-      console.log(token);
-      // res.status(200).json(token);
-      res.status(200).json(token);
-      // res.status(200).
+  userModel.findOne(
+    { username: req.body.username, password: req.body.password },
+    (err, user) => {
+      if (err) {
+        console.log(err);
+      } else {
+        const token = jwt.sign({ _id: user._id }, "secretkey");
+        console.log(token);
+        // res.status(200).json(token);
+        res.status(200).json(token);
+        // res.status(200).
+      }
     }
-  });
+  );
 });
 // middlewear
 app.use((req, res, next) => {
