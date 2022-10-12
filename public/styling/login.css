@@ -6,6 +6,7 @@
 
 body {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-image: url("./bgforms.jpg");
@@ -77,4 +78,7 @@ input[type="submit"] {
   display: flex;
   justify-content: center;
   margin-top: 20px;
+}
+#navigation {
+  align-self: baseline;
 }

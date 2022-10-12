@@ -48,21 +48,13 @@ function fillDestTemplate(dest) {
     window.location.replace("/views/update.html?id=" + dest._id);
   });
   // Return the filled node
-  //   clone.querySelector("#delete-button").addEventListener("click", deleteMe(dest._id));
+
   return clone;
 }
 function displayNewNode(newNode) {
   const destList = document.querySelector(".dest-list");
   destList.appendChild(newNode);
 }
-
-// function clearForm() {
-//     document.querySelector("#name").value = "";
-//     document.querySelector("#surname").value = "";
-//     document.querySelector("#company").value = "";
-//     document.querySelector("#phone").value = "";
-//     document.querySelector("#email").value = "";
-//   }
 
 async function deleteMe(obj) {
   const currentId = obj.id;

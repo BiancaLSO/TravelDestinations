@@ -6,15 +6,24 @@
 
 body {
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
   background-image: url("./bgforms.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
-
+#content {
+  /* min-height: 100vh; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-image: url("./bgforms.jpg"); */
+  /* background-repeat: no-repeat; */
+  /* background-position: center; */
+  /* background-size: cover; */
+}
 form {
   display: flex;
   flex-direction: column;
@@ -31,7 +40,7 @@ form {
 #createFormContainer,
 #updateFormContainer {
   position: absolute;
-  top: 50%;
+  top: 65%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -63,7 +72,8 @@ label {
   color: rgb(7, 7, 8);
 }
 
-input[type="submit"] {
+input[type="submit"],
+#navigation button {
   padding: 16px;
   background: rgb(7, 7, 8);
   color: white;
@@ -79,7 +89,7 @@ input[type="submit"] {
   visibility: hidden;
 }
 .modal {
-  background-color: rgb(2, 2, 81);
+  background-color: rgb(181, 179, 178);
   position: absolute;
   top: 50%;
   left: 50%;

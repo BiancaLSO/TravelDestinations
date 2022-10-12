@@ -5,20 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../public/styling/style.css" />
+    <link rel="stylesheet" type="text/css" href="../public/styling/create-update.css" />
+
     <title>Update</title>
   </head>
   <body>
+    <section id="navigation">
+      <button id="home">Home</button>
+      <button id="signUpBtn">Sign up</button>
+      <button id="create">Create</button>
+      <button id="logInBtn">Log in</button>
+    </section>
     <section id="updateFormContainer">
-      <form id="updateForm">
+      <form id="updateForm" novalidate>
         <h1>Update the current post</h1>
         <h3>(Changes will be applied and showed on the main page)</h3>
         <label for="name">
           Name:
           <input name="name" type="text" id="name" placeholder="Destination name" required />
+          <span class="error" aria-live="polite"></span>
         </label>
         <label for="location">
           Location:
           <input name="location" type="text" id="location" placeholder="Location" required />
+          <span class="error" aria-live="polite"></span>
         </label>
         <label for="startDate">
           Start Date:
@@ -31,6 +41,7 @@
         <label for="description">
           Description:
           <input name="description" type="textarea" id="description" placeholder="Description of the place" required />
+          <span class="error" aria-live="polite"></span>
         </label>
         <label for="img">
           Image:
@@ -42,6 +53,8 @@
     <div id="confirmationModalUpdate" class="modal hidden">
       <h1>Your travel destination was updated succesfully!</h1>
     </div>
+    <script src="/public/javascript/navigation.js"></script>
+
     <script src="../public/javascript/update-script.js"></script>
   </body>
 </html>

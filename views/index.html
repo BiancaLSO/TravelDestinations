@@ -4,16 +4,21 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" />
 
     <title>Travel Destinations</title>
   </head>
   <body>
+    <section id="navigation">
+      <button id="home">Home</button>
+      <button id="signUpBtn">Sign up</button>
+      <button id="create">Create</button>
+      <button id="logInBtn">Log in</button>
+    </section>
     <h1>Here will be the list of all the travel destinations</h1>
     <div class="dest-list"></div>
-    <!-- <script src="../public/javascript/create-script.js"></script> -->
-    <script src="../public/javascript/list-script.js"></script>
+
     <template id="destination-card">
       <div class="mini-card" id="temp">
         <h3>
@@ -31,6 +36,7 @@
         <p id="imgDestination"></p>
       </div>
     </template>
+    <script src="/public/javascript/navigation.js"></script>
+    <script src="../public/javascript/list-script.js"></script>
   </body>
 </html>
-
