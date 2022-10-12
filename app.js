@@ -1,14 +1,14 @@
 // import package for Mongoose Validation
 const { isEmail } = require("validator");
 const { isDate } = require("validator");
-
+// env file
+const dotenv = require("dotenv");
+dotenv.config();
 //connection to database
 const mongoose = require("mongoose");
 
 async function main() {
-  await mongoose.connect(
-    "mongodb+srv://traveldestinations:traveldestinations1234@travelcluster.xpbsjto.mongodb.net/TravelDestinations"
-  );
+  await mongoose.connect("mongodb+srv://traveldestinations:traveldestinations1234@travelcluster.xpbsjto.mongodb.net/TravelDestinations");
   // const connection = mongoose.connection;
 }
 
@@ -32,6 +32,7 @@ app.use(cors());
 const bcrypt = require("bcrypt");
 var passport = require("passport");
 var jwt = require("jsonwebtoken");
+var passportJWT = require("passport-jwt");
 
 //our destination Schema
 const destinationSchema = new schema({
@@ -58,8 +59,12 @@ const destinationSchema = new schema({
   img: { type: String },
 });
 
-//our user Schema
+// User Scehma for creating the User Model
 const userSchema = new schema({
+  name: {
+    type: String,
+    required: [true, "Please enter your name"],
+  },
   username: {
     type: String,
     required: [true, "Please enter a valid username"],
@@ -79,6 +84,13 @@ const userSchema = new schema({
       }
     },
   },
+  email: {
+    type: String,
+    required: [true, "Please enter an email account"],
+    unique: true,
+    lowercase: true,
+    validate: [isEmail, "Please enter a valid email account"],
+  },
   password: {
     type: String,
     required: [true, "Please enter your password"],
@@ -86,45 +98,20 @@ const userSchema = new schema({
     minlength: [8, "Minimum password length is 8 characters"],
   },
 });
+userSchema.pre("save", async function (next) {
+  const hash = await bcrypt.hash(this.password, 10);
+  this.password = hash;
+  console.log(hash);
+  next();
+});
+userSchema.methods.isValidPassword = async function (password) {
+  console.log(await bcrypt.compare(password, this.password));
+  return await bcrypt.compare(password, this.password);
+};
 const userModel = mongoose.model("User", userSchema);
 userModel.createCollection().then(function (collection) {
   console.log("Collection is created!");
 });
-
-// User Scehma for creating the User Model
-// const userSchema = new schema({
-//   firstName: {
-//     type: String,
-//     required: [true, "Please enter your name"],
-//   },
-//   lastName: {
-//     type: String,
-//     required: [true, "Please enter your surname"],
-//   },
-//   email: {
-//     type: String,
-//     required: [true, "Please enter an email account"],
-//     unique: true,
-//     lowercase: true,
-//     validate: [isEmail, "Please enter a valid email account"],
-//   },
-
-//   username: {
-//     type: String,
-//     required: [true, "Please enter a valid username"],
-//     unique: true,
-//   },
-//   password: {
-//     type: String,
-//     required: [true, "Please enter your password"],
-//     unique: true,
-//     minlength: [8, "Minimum password length is 8 characters"],
-//   },
-// });
-// const userModel = mongoose.model("User", userSchema);
-// userModel.createCollection().then(function (collection) {
-//   console.log("Collection is created!");
-// });
 
 //parser for body
 app.use(express.json());
@@ -140,7 +127,7 @@ async function addAnObject(myObject) {
 }
 
 // get request for all data
-app.get("/", async (request, response) => {
+app.get("/", passport.authenticate("jwt", { session: false }), async (request, response) => {
   const destinationModel = mongoose.model("Destination", destinationSchema);
   const destinations = await destinationModel.find({});
   try {
@@ -171,17 +158,14 @@ app.post("/", (req, res) => {
 // requests for Update form
 app.get("/:myID", function (req, res) {
   const destinationModel = mongoose.model("Destination", destinationSchema);
-  const destination = destinationModel.findOne(
-    { _id: req.params.myID },
-    function (err, destination) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("Result: ", destination);
-        res.status(200).json(destination);
-      }
+  const destination = destinationModel.findOne({ _id: req.params.myID }, function (err, destination) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Result: ", destination);
+      res.status(200).json(destination);
     }
-  );
+  });
 });
 app.put("/:myID", function (req, res) {
   console.log(req.params.myID);
@@ -198,14 +182,10 @@ app.put("/:myID", function (req, res) {
   console.log(destination);
 
   const destinationModel = mongoose.model("Destination", destinationSchema);
-  destinationModel.findOneAndUpdate(
-    { _id: req.params.myID },
-    destination,
-    (err, result) => {
-      if (err) res.status(422).json(err);
-      else res.status(200).json({ message: "Update success" });
-    }
-  );
+  destinationModel.findOneAndUpdate({ _id: req.params.myID }, destination, (err, result) => {
+    if (err) res.status(422).json(err);
+    else res.status(200).json({ message: "Update success" });
+  });
 });
 
 // request for Deleting
@@ -220,9 +200,12 @@ app.delete("/:myID", function (req, res) {
 // endpoint for Sign Up
 app.post("/auth/signup", (req, res) => {
   const user = new userModel({
+    name: req.body.name,
     username: req.body.username,
+    email: req.body.email,
     password: req.body.password,
   });
+
   user.save(function (err) {
     if (err) console.log(err);
     console.log(user);
@@ -230,21 +213,39 @@ app.post("/auth/signup", (req, res) => {
   res.status(200).json({ info: "we got POST request" });
 });
 app.get("/auth/login", (req, res) => {
-  userModel.findOne(
-    { username: req.body.username, password: req.body.password },
-    (err, user) => {
-      if (err) {
-        console.log(err);
-      } else {
-        const token = jwt.sign({ _id: user._id }, "secretkey");
+  userModel.findOne({ username: req.body.username }, async (err, user) => {
+    if (err) {
+      console.log(err);
+    } else {
+      let passwordInput = user.password;
+      const isValid = await bcrypt.compare(req.body.password, passwordInput);
+      console.log(isValid);
+      if (isValid) {
+        const token = jwt.sign({ _id: user._id }, process.env.jwt_secret);
         console.log(token);
-        // res.status(200).json(token);
         res.status(200).json(token);
-        // res.status(200).
       }
     }
-  );
+  });
 });
+// decode the token
+const ExtractJwt = passportJWT.ExtractJwt;
+const JwtStrategy = passportJWT.Strategy;
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: "mysecretword",
+};
+const strategy = new JwtStrategy(jwtOptions, async function (jwt_payload, next) {
+  const user = await userModel.findOne({ _id: jwt_payload._id });
+  if (user) {
+    next(null, user);
+  } else {
+    next(null, false);
+  }
+});
+passport.use(strategy);
+app.use(passport.initialize());
+
 // middlewear
 app.use((req, res, next) => {
   req.username;

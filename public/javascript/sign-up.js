@@ -3,7 +3,9 @@ const url = "http://localhost:8082/";
 document.querySelector("#signUp").addEventListener("click", async (event) => {
   event.preventDefault();
   const user = {
+    name: document.querySelector("#name").value,
     username: document.querySelector("#username").value,
+    email: document.querySelector("#email").value,
     password: document.querySelector("#password").value,
   };
   const response = await postUser(user);
