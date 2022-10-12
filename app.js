@@ -6,9 +6,7 @@ const { isDate } = require("validator");
 const mongoose = require("mongoose");
 
 async function main() {
-  await mongoose.connect(
-    "mongodb+srv://traveldestinations:traveldestinations1234@travelcluster.xpbsjto.mongodb.net/TravelDestinations"
-  );
+  await mongoose.connect("mongodb+srv://traveldestinations:traveldestinations1234@travelcluster.xpbsjto.mongodb.net/TravelDestinations");
   // const connection = mongoose.connection;
 }
 
@@ -115,7 +113,7 @@ userModel.createCollection().then(function (collection) {
 //parser for body
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 //inserts an object to my mongo
 async function addAnObject(myObject) {
@@ -157,17 +155,14 @@ app.post("/", (req, res) => {
 // requests for Update form
 app.get("/:myID", function (req, res) {
   const destinationModel = mongoose.model("Destination", destinationSchema);
-  const destination = destinationModel.findOne(
-    { _id: req.params.myID },
-    function (err, destination) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("Result: ", destination);
-        res.status(200).json(destination);
-      }
+  const destination = destinationModel.findOne({ _id: req.params.myID }, function (err, destination) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Result: ", destination);
+      res.status(200).json(destination);
     }
-  );
+  });
 });
 app.put("/:myID", function (req, res) {
   console.log(req.params.myID);
@@ -184,14 +179,10 @@ app.put("/:myID", function (req, res) {
   console.log(destination);
 
   const destinationModel = mongoose.model("Destination", destinationSchema);
-  destinationModel.findOneAndUpdate(
-    { _id: req.params.myID },
-    destination,
-    (err, result) => {
-      if (err) res.status(422).json(err);
-      else res.status(200).json({ message: "Update success" });
-    }
-  );
+  destinationModel.findOneAndUpdate({ _id: req.params.myID }, destination, (err, result) => {
+    if (err) res.status(422).json(err);
+    else res.status(200).json({ message: "Update success" });
+  });
 });
 
 // request for Deleting
@@ -216,20 +207,17 @@ app.post("/auth/signup", (req, res) => {
   res.status(200).json({ info: "we got POST request" });
 });
 app.get("/auth/login", (req, res) => {
-  userModel.findOne(
-    { username: req.body.username, password: req.body.password },
-    (err, user) => {
-      if (err) {
-        console.log(err);
-      } else {
-        const token = jwt.sign({ _id: user._id }, "secretkey");
-        console.log(token);
-        // res.status(200).json(token);
-        res.status(200).json(token);
-        // res.status(200).
-      }
+  userModel.findOne({ username: req.body.username, password: req.body.password }, (err, user) => {
+    if (err) {
+      console.log(err);
+    } else {
+      const token = jwt.sign({ _id: user._id }, "secretkey");
+      console.log(token);
+      // res.status(200).json(token);
+      res.status(200).json(token);
+      // res.status(200).
     }
-  );
+  });
 });
 // middlewear
 app.use((req, res, next) => {
