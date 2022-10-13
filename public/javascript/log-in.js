@@ -3,6 +3,9 @@ document.querySelector("#logIn").addEventListener("click", async (event) => {
   event.preventDefault();
   const response = await getUser();
   console.log(response);
+  if (response.errors.description) {
+    console.log("you have backend error");
+  }
 });
 async function getUser() {
   console.log("it gets here");
@@ -10,7 +13,8 @@ async function getUser() {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQzZGVmOTg0MTgxNDY4YWYwYzIzMWQiLCJpYXQiOjE2NjUzOTM5ODV9.p6fT1YeLOGVoy20rBqc7k9JQvChCvEtGbCJlyQ9W_kI",
+
+      // Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQzZGVmOTg0MTgxNDY4YWYwYzIzMWQiLCJpYXQiOjE2NjUzOTM5ODV9.p6fT1YeLOGVoy20rBqc7k9JQvChCvEtGbCJlyQ9W_kI",
     },
   });
   if (result.status === 200) {
@@ -21,4 +25,5 @@ async function getUser() {
   }
   const res = await result.json();
   console.log(res);
+  return res;
 }

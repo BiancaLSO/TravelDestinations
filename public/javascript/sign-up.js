@@ -39,10 +39,10 @@ emailInp.addEventListener("input", (event) => {
   if (emailInp.validity.valid) {
     emailError.textContent = "";
     emailError.className = "error";
-    // make the first letter always uppercase
-    let value = emailInp.value;
-    let upperCaseValue = value.charAt(0).toUpperCase() + value.slice(1);
-    emailInp.value = upperCaseValue;
+    // // make the first letter always uppercase
+    // let value = emailInp.value;
+    // let upperCaseValue = value.charAt(0).toUpperCase() + value.slice(1);
+    // emailInp.value = upperCaseValue;
   } else {
     showErrorEmail();
   }
@@ -117,7 +117,7 @@ function checkPasswords() {
 document.querySelector("#signUp").addEventListener("click", async (event) => {
   event.preventDefault();
   checkPasswords();
-  if (!nameInp.validity.valid || !emailInp.validity.valid || confirmPassworError.className === "error active") {
+  if (!nameInp.validity.valid || !emailInp.validity.valid) {
     console.log("an input is invalid");
   } else {
     const user = {

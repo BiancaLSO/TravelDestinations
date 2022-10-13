@@ -1,6 +1,6 @@
 // import package for Mongoose Validation
-const { isEmail } = require("validator");
-const { isDate } = require("validator");
+// const { isEmail } = require("validator");
+const { isDate, isEmail } = require("validator");
 // env file
 const dotenv = require("dotenv");
 dotenv.config();
@@ -25,8 +25,10 @@ const port = 8082;
 // add router from express
 
 //for cors
+
 var cors = require("cors");
 app.use(cors());
+app.options("*", cors());
 
 // for generating token
 const bcrypt = require("bcrypt");
@@ -127,7 +129,7 @@ async function addAnObject(myObject) {
 }
 
 // get request for all data
-app.get("/", passport.authenticate("jwt", { session: false }), async (request, response) => {
+app.get("/", async (request, response) => {
   const destinationModel = mongoose.model("Destination", destinationSchema);
   const destinations = await destinationModel.find({});
   try {
@@ -213,12 +215,18 @@ app.post("/auth/signup", (req, res) => {
   res.status(200).json({ info: "we got POST request" });
 });
 app.get("/auth/login", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET");
+  res.header("Access-Control-Allow-Headers", "accept, content-type");
+  res.header("Access-Control-Max-Age", "1728000");
+  console.log(req.body);
   userModel.findOne({ username: req.body.username }, async (err, user) => {
     if (err) {
       console.log(err);
     } else {
-      let passwordInput = user.password;
-      const isValid = await bcrypt.compare(req.body.password, passwordInput);
+      console.log(user);
+      // let passwordInput = user.password;
+      const isValid = await bcrypt.compare(req.body.password, user.password);
       console.log(isValid);
       if (isValid) {
         const token = jwt.sign({ _id: user._id }, process.env.jwt_secret);
