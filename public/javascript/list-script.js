@@ -41,7 +41,7 @@ function fillDestTemplate(dest) {
   clone.querySelector("#startDateDestination").textContent = new Date(dest.startDate).toISOString().slice(0, 10);
   clone.querySelector("#endDateDestination").textContent = new Date(dest.endDate).toISOString().slice(0, 10);
   clone.querySelector("#descriptionDestination").textContent = dest.description;
-  clone.querySelector("#imgDestination").src = dest.img;
+  clone.querySelector("#imgDestination").src = "https://picsum.photos/200/300";
   clone.querySelector("#delete-button").id = dest._id;
   //finish the edit button
   clone.querySelector("#edit-button").addEventListener("click", () => {

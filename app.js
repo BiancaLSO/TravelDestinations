@@ -7,6 +7,7 @@ async function main() {
   // const connection = mongoose.connection;
 }
 
+
 main().catch((err) => console.log(err));
 
 const schema = mongoose.Schema;
@@ -15,9 +16,47 @@ const bodyParser = require("body-parser");
 
 //require framework
 const express = require("express");
+
+// for images
+const path = require('path');
+// const crypto = require('crypto');
+// const multer = require('multer');
+// const GridFsStorage = require('multer-gridfs-storage').GridFsStorage;
+// const Grid = require('gridfs-stream');
+
+
+// middleware
+
+
 const app = express();
 const port = 8082;
-// add router from express
+
+app.set('view wngine', 'ejs');
+app.use(bodyParser.json());
+
+// init gfs
+// let gfs;
+// conn.once('open', () => {
+//   gfs = Grid(conn.db, mongoose.mongo)
+// })
+
+// create storage engine
+// const storage = new GridFsStorage({
+//   url: 'mongodb+srv://traveldestinations:traveldestinations1234@travelcluster.xpbsjto.mongodb.net/TravelDestinations',
+//   file: (req, file ) => {
+//     crypto.randomBytes(16, (err, buf) =>{
+//       if(err){
+//         return rejects(err);
+//       }
+//       const filename = buf.toString('hex') +  path.extname(file.originalname);
+//       const fileInfo = {
+//         filename: filename,
+//         bucketName: 'uploads'
+//       };
+//       resolve(fileInfo);
+//     })
+//   }
+// })
 
 //for cors
 var cors = require("cors");
@@ -27,6 +66,8 @@ app.use(cors());
 const bcrypt = require("bcrypt");
 var passport = require("passport");
 var jwt = require("jsonwebtoken");
+// const { rejects } = require("assert");
+// const { resolve } = require("path");
 
 //our destination Schema
 const destinationSchema = new schema({
@@ -72,9 +113,13 @@ app.get("/", async (request, response) => {
   }
 });
 
+
+
+
 //post request from create form
 app.post("/", (req, res) => {
-  res.status(200).json({ info: "we got POST request" });
+  res.status(200).json({ img: req.img });
+
   console.log(req.body);
   const destinationModel = mongoose.model("Destination", destinationSchema);
   const myObject = new destinationModel({
@@ -83,7 +128,7 @@ app.post("/", (req, res) => {
     startDate: req.body.startDate,
     endDate: req.body.endDate,
     description: req.body.description,
-    img: req.body.img,
+    img: "https://picsum.photos/200/300",
     // make Date.parse();
   });
 
@@ -110,7 +155,7 @@ app.put("/:myID", function (req, res) {
     startDate: req.body.startDate,
     endDate: req.body.endDate,
     description: req.body.description,
-    img: req.body.img,
+    img: "https://picsum.photos/200/300",
   };
   destination._id = req.params.myID;
 
