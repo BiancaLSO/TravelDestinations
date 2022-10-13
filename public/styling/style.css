@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   font-family: 'inter', sans-serif;
+
 }
 
 body {
@@ -19,10 +20,9 @@ form {
   flex-direction: column;
   width: 60%;
   justify-content: center;
-  background: rgb(210, 207, 206);
-  flex-direction: column;
+  background: #ffffff;
   padding: 2vw 4vw;
-  width: 90%;
+  width: 80%;
   max-width: 600px;
   border-radius: 10px;
 }
@@ -31,8 +31,8 @@ form {
 #createFormContainer,
 #updateFormContainer {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 65%;
+  left: 53%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
@@ -66,7 +66,7 @@ label {
 
 input[type="submit"] {
   padding: 16px;
-  background:rgb(7, 7, 8);
+  background: #f5595a;
   color: white;
   font-size: 16px;
   border: 0;
@@ -77,4 +77,36 @@ input[type="submit"] {
   cursor: pointer;
 }
 
+.header {
+  width: 100%;
+  height: 80px;
+  display: block;
+  background-color: #f5595a;
+}
+
+.inner_header {
+  width: 100opx;
+  height: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.logo_container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo_container h2 {
+  color: white;
+  text-align: center;
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  font-family: 'inter', sans-serif;
+  font-size: 15px;
+  margin-top: 60px;
+  margin-left: 10px;
+}
 
