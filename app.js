@@ -6,6 +6,9 @@ const dotenv = require("dotenv");
 dotenv.config();
 //connection to database
 const mongoose = require("mongoose");
+//for cors
+
+var cors = require("cors");
 
 async function main() {
   await mongoose.connect("mongodb+srv://traveldestinations:traveldestinations1234@travelcluster.xpbsjto.mongodb.net/TravelDestinations");
@@ -24,9 +27,6 @@ const app = express();
 const port = 8082;
 // add router from express
 
-//for cors
-
-var cors = require("cors");
 app.use(cors());
 app.options("*", cors());
 
@@ -71,7 +71,7 @@ const userSchema = new schema({
     type: String,
     required: [true, "Please enter a valid username"],
     async validate(username) {
-      if (username === "Hi") {
+      if (username) {
         let user;
 
         try {
@@ -82,7 +82,7 @@ const userSchema = new schema({
           throw e; // rethrow error if findOne call fails since fruit will be null and this validation will pass with the next statement
         }
 
-        if (user) throw new Error(`A fruit for ${username} already exists.`);
+        if (user) throw new Error(`This username: ${username} already esxists.`);
       }
     },
   },
@@ -118,7 +118,7 @@ userModel.createCollection().then(function (collection) {
 //parser for body
 app.use(express.json());
 app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //inserts an object to my mongo
 async function addAnObject(myObject) {
@@ -127,7 +127,23 @@ async function addAnObject(myObject) {
     console.log(myObject);
   });
 }
-
+// decode the token
+const ExtractJwt = passportJWT.ExtractJwt;
+const JwtStrategy = passportJWT.Strategy;
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.jwt_secret,
+};
+const strategy = new JwtStrategy(jwtOptions, async function (jwt_payload, next) {
+  const user = await userModel.findOne({ _id: jwt_payload._id });
+  if (user) {
+    next(null, user);
+  } else {
+    next(null, false);
+  }
+});
+passport.use(strategy);
+app.use(passport.initialize());
 // get request for all data
 app.get("/", async (request, response) => {
   const destinationModel = mongoose.model("Destination", destinationSchema);
@@ -209,50 +225,36 @@ app.post("/auth/signup", (req, res) => {
   });
 
   user.save(function (err) {
-    if (err) console.log(err);
-    console.log(user);
+    if (err) {
+      console.log(err);
+      console.log(user);
+      res.status(400).json(err);
+    } else {
+      res.status(200).json({ info: "we got POST request" });
+    }
   });
-  res.status(200).json({ info: "we got POST request" });
 });
-app.get("/auth/login", (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET");
-  res.header("Access-Control-Allow-Headers", "accept, content-type");
-  res.header("Access-Control-Max-Age", "1728000");
+app.post("/auth/login", (req, res) => {
   console.log(req.body);
   userModel.findOne({ username: req.body.username }, async (err, user) => {
     if (err) {
-      console.log(err);
+      console.log("test", err);
     } else {
-      console.log(user);
+      // console.log(user.username);
+      res.status(400).json("You have an error");
+
       // let passwordInput = user.password;
       const isValid = await bcrypt.compare(req.body.password, user.password);
       console.log(isValid);
       if (isValid) {
         const token = jwt.sign({ _id: user._id }, process.env.jwt_secret);
         console.log(token);
-        res.status(200).json(token);
+
+        res.status(200).json("This is my token:" + token);
       }
     }
   });
 });
-// decode the token
-const ExtractJwt = passportJWT.ExtractJwt;
-const JwtStrategy = passportJWT.Strategy;
-const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: "mysecretword",
-};
-const strategy = new JwtStrategy(jwtOptions, async function (jwt_payload, next) {
-  const user = await userModel.findOne({ _id: jwt_payload._id });
-  if (user) {
-    next(null, user);
-  } else {
-    next(null, false);
-  }
-});
-passport.use(strategy);
-app.use(passport.initialize());
 
 // middlewear
 app.use((req, res, next) => {

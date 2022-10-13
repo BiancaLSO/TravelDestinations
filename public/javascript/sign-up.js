@@ -4,8 +4,8 @@ const form = document.querySelector("#signUpForm");
 
 const nameInp = document.querySelector("#name");
 const nameError = document.querySelector("#name + span.error");
-// const usernameInp = document.querySelector("#username");
-// const usernameError = document.querySelector("#username + span.error");
+const usernameInp = document.querySelector("#username");
+const usernameError = document.querySelector("#username + span.error");
 const emailInp = document.querySelector("#email");
 const emailError = document.querySelector("#email+ span.error");
 const passwordInp = document.querySelector("#password");
@@ -117,6 +117,7 @@ function checkPasswords() {
 document.querySelector("#signUp").addEventListener("click", async (event) => {
   event.preventDefault();
   checkPasswords();
+  // fix confirm password validation
   if (!nameInp.validity.valid || !emailInp.validity.valid) {
     console.log("an input is invalid");
   } else {
@@ -127,9 +128,16 @@ document.querySelector("#signUp").addEventListener("click", async (event) => {
       password: document.querySelector("#password").value,
     };
     const response = await postUser(user);
-    console.log(response);
-    if (response.status === 200) {
-      // window.location.replace("/views/index.html");
+
+    if (!response.errors) {
+      window.location.replace("/views/index.html");
+    } else {
+      if (response.errors.username) {
+        usernameError.textContent = response.errors.username.message;
+      }
+      if (response.errors.password) {
+        passwordError.textContent = response.errors.password.message;
+      }
     }
   }
 });
@@ -142,6 +150,6 @@ async function postUser(user) {
     },
     body: JSON.stringify(user),
   });
-  console.log(response);
-  return response;
+  const res = await response.json();
+  return res;
 }
