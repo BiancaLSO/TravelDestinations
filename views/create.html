@@ -5,7 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../public/styling/style.css" />
-    <link rel="stylesheet" type="text/css" href="../public/styling/create-update.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../public/styling/create-update.css"
+    />
     <title>Travel Destinations</title>
   </head>
   <body>
@@ -14,33 +18,70 @@
       <button id="signUpBtn">Sign up</button>
       <button id="create">Create</button>
       <button id="logInBtn">Log in</button>
+      <button id="logOutBtn">Log out</button>
     </section>
     <section id="content">
       <div id="createFormContainer">
         <form id="createForm" novalidate>
           <h1>Create a new travel destination</h1>
-          <h3>(This destination will be shown on our Travel destinations main page)</h3>
+          <h3>
+            (This destination will be shown on our Travel destinations main
+            page)
+          </h3>
           <label for="name">
             Name:
-            <input name="name" type="text" id="name" placeholder="Destination name" required minlength="3" />
+            <input
+              name="name"
+              type="text"
+              id="name"
+              placeholder="Destination name"
+              required
+              minlength="3"
+            />
             <span class="error" aria-live="polite"></span>
           </label>
           <label for="location">
             Location:
-            <input name="location" type="text" id="location" placeholder="Location" required minlength="3" />
+            <input
+              name="location"
+              type="text"
+              id="location"
+              placeholder="Location"
+              required
+              minlength="3"
+            />
             <span class="error" aria-live="polite"></span>
           </label>
           <label for="startDate">
             Start Date:
-            <input name="startDate" type="date" id="startDate" placeholder="Start date" required />
+            <input
+              name="startDate"
+              type="date"
+              id="startDate"
+              placeholder="Start date"
+              required
+            />
           </label>
           <label for="endDate">
             End Date:
-            <input name="endDate" type="date" id="endDate" placeholder="End date" required />
+            <input
+              name="endDate"
+              type="date"
+              id="endDate"
+              placeholder="End date"
+              required
+            />
           </label>
           <label for="description">
             Description:
-            <input name="description" type="textarea" id="description" placeholder="Description of the place" required minlength="10" />
+            <input
+              name="description"
+              type="textarea"
+              id="description"
+              placeholder="Description of the place"
+              required
+              minlength="10"
+            />
             <span class="error" aria-live="polite"></span>
           </label>
           <input type="submit" name="submit" id="submit" value="Create" />
@@ -52,6 +93,7 @@
     </div>
   </body>
   <script src="/public/javascript/navigation.js"></script>
+  <script src="/public/javascript/log-out.js"></script>
 
   <script src="/public/javascript/create-script.js"></script>
 </html>

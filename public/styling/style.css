@@ -88,6 +88,7 @@ input[type="submit"],
 .hidden {
   visibility: hidden;
 }
+
 .modal {
   background-color: rgb(181, 179, 178);
   position: absolute;

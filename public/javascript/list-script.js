@@ -3,11 +3,18 @@
 window.addEventListener("load", async () => {
   await getData();
 });
+
+//const tokenFromStorage = localStorage.getItem("token");
 const url = "http://localhost:8082/";
 async function getData() {
   // e.preventDefault();
   const response = await fetch(url, {
     method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      // put token here
+      // Authorization: `Bearer ${tokenFromStorage}`,
+    },
   });
   console.log(response);
   const body = await response.json();
@@ -28,6 +35,7 @@ async function loadAndShowData(response) {
     displayNewNode(newNode);
   });
 }
+
 function fillDestTemplate(dest) {
   console.log(dest);
   // Get the template
@@ -38,8 +46,16 @@ function fillDestTemplate(dest) {
   //   clone.querySelector("#temp").id = contact.id;
   clone.querySelector("#nameDestination").textContent = dest.name;
   clone.querySelector("#locationDestination").textContent = dest.location;
-  clone.querySelector("#startDateDestination").textContent = new Date(dest.startDate).toISOString().slice(0, 10);
-  clone.querySelector("#endDateDestination").textContent = new Date(dest.endDate).toISOString().slice(0, 10);
+  clone.querySelector("#startDateDestination").textContent = new Date(
+    dest.startDate
+  )
+    .toISOString()
+    .slice(0, 10);
+  clone.querySelector("#endDateDestination").textContent = new Date(
+    dest.endDate
+  )
+    .toISOString()
+    .slice(0, 10);
   clone.querySelector("#descriptionDestination").textContent = dest.description;
   clone.querySelector("#imgDestination").src = "https://picsum.photos/200/300";
   clone.querySelector("#delete-button").id = dest._id;
@@ -49,8 +65,23 @@ function fillDestTemplate(dest) {
   });
   // Return the filled node
 
+  // Hide edit & delete buttons from non-users
+
+  const token = localStorage.getItem("token");
+  if (token) {
+    console.log("token exists");
+    clone.getElementById(`${dest._id}`).classList.remove("hideBtn");
+    clone.querySelector("#edit-button").classList.remove("hideBtn");
+  } else {
+    // clone.querySelector("#delete-button").classList.add("hideBtn");
+    clone.getElementById(`${dest._id}`).classList.add("hideBtn");
+
+    clone.querySelector("#edit-button").classList.add("hideBtn");
+  }
+
   return clone;
 }
+
 function displayNewNode(newNode) {
   const destList = document.querySelector(".dest-list");
   destList.appendChild(newNode);
@@ -64,7 +95,7 @@ async function deleteMe(obj) {
     headers: {
       "Content-Type": "application/json",
       // put token here
-      // Authorization: "Bearer ${tokenFromStorage}eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQzZGVmOTg0MTgxNDY4YWYwYzIzMWQiLCJpYXQiOjE2NjUzOTM5ODV9.p6fT1YeLOGVoy20rBqc7k9JQvChCvEtGbCJlyQ9W_kI",
+      Authorization: `Bearer ${tokenFromStorage}`,
     },
     // body: JSON.stringify(destination),
   });

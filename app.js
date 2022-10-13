@@ -11,7 +11,9 @@ const mongoose = require("mongoose");
 var cors = require("cors");
 
 async function main() {
-  await mongoose.connect("mongodb+srv://traveldestinations:traveldestinations1234@travelcluster.xpbsjto.mongodb.net/TravelDestinations");
+  await mongoose.connect(
+    "mongodb+srv://traveldestinations:traveldestinations1234@travelcluster.xpbsjto.mongodb.net/TravelDestinations"
+  );
   // const connection = mongoose.connection;
 }
 
@@ -35,6 +37,7 @@ const bcrypt = require("bcrypt");
 var passport = require("passport");
 var jwt = require("jsonwebtoken");
 var passportJWT = require("passport-jwt");
+const { response } = require("express");
 
 //our destination Schema
 const destinationSchema = new schema({
@@ -82,7 +85,8 @@ const userSchema = new schema({
           throw e; // rethrow error if findOne call fails since fruit will be null and this validation will pass with the next statement
         }
 
-        if (user) throw new Error(`This username: ${username} already esxists.`);
+        if (user)
+          throw new Error(`This username: ${username} already esxists.`);
       }
     },
   },
@@ -134,7 +138,10 @@ const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.jwt_secret,
 };
-const strategy = new JwtStrategy(jwtOptions, async function (jwt_payload, next) {
+const strategy = new JwtStrategy(jwtOptions, async function (
+  jwt_payload,
+  next
+) {
   const user = await userModel.findOne({ _id: jwt_payload._id });
   if (user) {
     next(null, user);
@@ -143,17 +150,22 @@ const strategy = new JwtStrategy(jwtOptions, async function (jwt_payload, next) 
   }
 });
 passport.use(strategy);
+
 app.use(passport.initialize());
 // get request for all data
-app.get("/", async (request, response) => {
-  const destinationModel = mongoose.model("Destination", destinationSchema);
-  const destinations = await destinationModel.find({});
-  try {
-    response.send(destinations);
-  } catch (error) {
-    response.status(500).send(error);
+app.get(
+  "/",
+  // passport.authenticate("jwt", { session: false }),
+  async (request, response) => {
+    const destinationModel = mongoose.model("Destination", destinationSchema);
+    const destinations = await destinationModel.find({});
+    try {
+      response.send(destinations);
+    } catch (error) {
+      response.status(500).send(error);
+    }
   }
-});
+);
 
 //post request from create form
 app.post("/", (req, res) => {
@@ -174,17 +186,24 @@ app.post("/", (req, res) => {
 });
 
 // requests for Update form
-app.get("/:myID", function (req, res) {
-  const destinationModel = mongoose.model("Destination", destinationSchema);
-  const destination = destinationModel.findOne({ _id: req.params.myID }, function (err, destination) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Result: ", destination);
-      res.status(200).json(destination);
-    }
-  });
-});
+app.get(
+  "/:myID",
+  passport.authenticate("jwt", { session: false }),
+  function (req, res) {
+    const destinationModel = mongoose.model("Destination", destinationSchema);
+    const destination = destinationModel.findOne(
+      { _id: req.params.myID },
+      function (err, destination) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.status(200).json(destination);
+        }
+      }
+    );
+    res.redirect(303, "auth/login");
+  }
+);
 app.put("/:myID", function (req, res) {
   console.log(req.params.myID);
   const destination = {
@@ -200,10 +219,14 @@ app.put("/:myID", function (req, res) {
   console.log(destination);
 
   const destinationModel = mongoose.model("Destination", destinationSchema);
-  destinationModel.findOneAndUpdate({ _id: req.params.myID }, destination, (err, result) => {
-    if (err) res.status(422).json(err);
-    else res.status(200).json({ message: "Update success" });
-  });
+  destinationModel.findOneAndUpdate(
+    { _id: req.params.myID },
+    destination,
+    (err, result) => {
+      if (err) res.status(422).json(err);
+      else res.status(200).json({ message: "Update success" });
+    }
+  );
 });
 
 // request for Deleting
@@ -234,23 +257,20 @@ app.post("/auth/signup", (req, res) => {
     }
   });
 });
+
 app.post("/auth/login", (req, res) => {
   console.log(req.body);
   userModel.findOne({ username: req.body.username }, async (err, user) => {
     if (err) {
       console.log("test", err);
     } else {
-      // console.log(user.username);
-      res.status(400).json("You have an error");
-
-      // let passwordInput = user.password;
       const isValid = await bcrypt.compare(req.body.password, user.password);
       console.log(isValid);
       if (isValid) {
         const token = jwt.sign({ _id: user._id }, process.env.jwt_secret);
         console.log(token);
 
-        res.status(200).json("This is my token:" + token);
+        res.status(200).json(token);
       }
     }
   });

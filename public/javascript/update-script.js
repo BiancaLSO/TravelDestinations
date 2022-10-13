@@ -8,6 +8,8 @@ window.addEventListener("load", async function () {
 
 const url = "http://localhost:8082/";
 
+const tokenFromStorage = localStorage.getItem("token");
+
 function getIdFromUrl() {
   const location = window.location.toString();
   const splitQuestionmark = location.split("?");
@@ -20,8 +22,12 @@ function fillInTheForm(destination) {
   console.log(destination);
   document.querySelector("#name").value = destination.name;
   document.querySelector("#location").value = destination.location;
-  document.querySelector("#startDate").value = new Date(destination.startDate).toISOString().slice(0, 10);
-  document.querySelector("#endDate").value = new Date(destination.endDate).toISOString().slice(0, 10);
+  document.querySelector("#startDate").value = new Date(destination.startDate)
+    .toISOString()
+    .slice(0, 10);
+  document.querySelector("#endDate").value = new Date(destination.endDate)
+    .toISOString()
+    .slice(0, 10);
   document.querySelector("#description").value = destination.description;
   document.querySelector("#img").src = destination.img;
 }
@@ -97,14 +103,22 @@ function showErrorDesc() {
 }
 myform.addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (!nameInp.validity.valid || !locationInp.validity.valid || !descInp.validity.valid) {
+  if (
+    !nameInp.validity.valid ||
+    !locationInp.validity.valid ||
+    !descInp.validity.valid
+  ) {
     console.log("an input is invalid that is why not sending post");
   } else {
     const destination = {
       name: document.querySelector("#name").value,
       location: document.querySelector("#location").value,
-      startDate: new Date(document.querySelector("#startDate").value).toISOString().slice(0, 10),
-      endDate: new Date(document.querySelector("#endDate").value).toISOString().slice(0, 10),
+      startDate: new Date(document.querySelector("#startDate").value)
+        .toISOString()
+        .slice(0, 10),
+      endDate: new Date(document.querySelector("#endDate").value)
+        .toISOString()
+        .slice(0, 10),
       description: document.querySelector("#description").value,
       img: document.querySelector("#img").src,
     };
@@ -141,6 +155,7 @@ async function putData(id, destination) {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${tokenFromStorage}`,
     },
     body: JSON.stringify(destination),
   });

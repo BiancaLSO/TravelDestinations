@@ -7,9 +7,10 @@ document.querySelector("#logIn").addEventListener("click", async (event) => {
   };
   const response = await getUser(user);
   console.log(response);
-  // if (response.errors.description) {
-  //   console.log("you have backend error");
-  // }
+  localStorage.setItem("token", response);
+  if (response) {
+    window.location.replace("/views/index.html");
+  }
 });
 async function getUser(user) {
   console.log("it gets here");

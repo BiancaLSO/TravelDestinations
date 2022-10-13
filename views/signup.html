@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../public/styling/style.css" />
 
-    <link rel="stylesheet" type="text/css" href="../public/styling/signup.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../public/styling/signup.css"
+    />
     <title>Sign up</title>
   </head>
   <body>
@@ -15,40 +19,77 @@
       <button id="signUpBtn">Sign up</button>
       <button id="create">Create</button>
       <button id="logInBtn">Log in</button>
+      <button id="logOutBtn">Log out</button>
     </section>
     <section id="signUpContainer">
       <form id="signUpForm" novalidate>
         <h1>Sign Up</h1>
         <label for="name">
           Full Name:
-          <input name="name" type="text" id="name" placeholder=" Full name" required minlength="3" />
+          <input
+            name="name"
+            type="text"
+            id="name"
+            placeholder=" Full name"
+            required
+            minlength="3"
+          />
           <span class="error" aria-live="polite"></span>
         </label>
         <label for="username">
           Username:
-          <input name="username" type="text" id="username" placeholder="Username" required minlength="3" />
+          <input
+            name="username"
+            type="text"
+            id="username"
+            placeholder="Username"
+            required
+            minlength="3"
+          />
           <span class="error" aria-live="polite"></span>
         </label>
         <label for="email">
           Email:
-          <input name="email" type="email" id="email" placeholder="Email" required minlength="3" />
+          <input
+            name="email"
+            type="email"
+            id="email"
+            placeholder="Email"
+            required
+            minlength="3"
+          />
           <span class="error" aria-live="polite"></span>
         </label>
         <label for="password">
           Password:
-          <input name="password" type="password" id="password" placeholder="Password" required minlength="8" />
+          <input
+            name="password"
+            type="password"
+            id="password"
+            placeholder="Password"
+            required
+            minlength="8"
+          />
           <!-- there should be an error here coming from backend -->
           <span class="error" aria-live="polite"></span>
         </label>
         <label for="confirmpassword">
           Confirm Password:
-          <input name="confirmpassword" type="text" id="confirmpassword" placeholder="Confirm password" required minlength="8" />
+          <input
+            name="confirmpassword"
+            type="password"
+            id="confirmpassword"
+            placeholder="Confirm password"
+            required
+            minlength="8"
+          />
           <span class="error" aria-live="polite"></span>
         </label>
         <input type="submit" value="Sign up" id="signUp" />
       </form>
     </section>
     <script src="/public/javascript/navigation.js"></script>
+    <script src="/public/javascript/log-out.js"></script>
 
     <script src="../public/javascript/sign-up.js"></script>
     <script src="../app.js"></script>
