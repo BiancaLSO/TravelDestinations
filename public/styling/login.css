@@ -8,7 +8,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("./bgforms.jpg");
   background-position: center;
   background-repeat: no-repeat;
   backdrop-filter: blur(2px);
@@ -19,7 +18,7 @@ form {
   flex-direction: column;
   width: 60%;
   justify-content: center;
-  background: rgb(210, 207, 206);
+  background: #ffffff;
   flex-direction: column;
   padding: 2vw 4vw;
   width: 90%;
@@ -29,9 +28,11 @@ form {
 
 #signInContainer {
   width: 100%;
-  height: 100vh;
+  height: 50vh;
   display: flex;
-  align-items: center;
+  position: absolute;
+  top: 170%;
+  left: 0px;
   justify-content: center;
 }
 
@@ -57,13 +58,15 @@ form input {
   margin: 10px 0;
   padding: 20px;
   outline: none;
-  background: rgb(245, 243, 243);
+  border: 0.5px;
+  border-style: solid;
+  border-color: #f5595a;
   font-size: 14px;
 }
 
 input[type="submit"] {
   padding: 16px;
-  background: rgb(7, 7, 8);
+  background: #f5595a;
   color: white;
   font-size: 16px;
   border: 0;
@@ -77,4 +80,37 @@ input[type="submit"] {
   display: flex;
   justify-content: center;
   margin-top: 20px;
+}
+
+.header {
+  width: 100%;
+  height: 80px;
+  display: block;
+  background-color: #f5595a;
+}
+
+.inner_header {
+  width: 100opx;
+  height: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.logo_container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo_container h2 {
+  color: white;
+  text-align: center;
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  font-family: "inter", sans-serif;
+  font-size: 15px;
+  margin-top: 60px;
+  margin-left: 10px;
 }
