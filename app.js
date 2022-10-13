@@ -1,20 +1,21 @@
-// import package for Mongoose Validation
-// const { isEmail } = require("validator");
+// Import validator methods
 const { isDate, isEmail } = require("validator");
-// env file
+
+// .env file
 const dotenv = require("dotenv");
 dotenv.config();
-//connection to database
-const mongoose = require("mongoose");
-//for cors
 
+// Import package for Mongoose Validation
+const mongoose = require("mongoose");
+
+//for cors
 var cors = require("cors");
 
+//connection to database
 async function main() {
   await mongoose.connect(
     "mongodb+srv://traveldestinations:traveldestinations1234@travelcluster.xpbsjto.mongodb.net/TravelDestinations"
   );
-  // const connection = mongoose.connection;
 }
 
 main().catch((err) => console.log(err));
@@ -23,23 +24,24 @@ const schema = mongoose.Schema;
 const ObjectId = require("mongodb").ObjectId;
 const bodyParser = require("body-parser");
 
-//require framework
+// Express
 const express = require("express");
 const app = express();
 const port = 8082;
-// add router from express
 
+// Cors
 app.use(cors());
 app.options("*", cors());
 
-// for generating token
+//  Generating Jwt token
 const bcrypt = require("bcrypt");
 var passport = require("passport");
 var jwt = require("jsonwebtoken");
 var passportJWT = require("passport-jwt");
+
 const { response } = require("express");
 
-//our destination Schema
+// Destination Schema for creatting the Destination Model
 const destinationSchema = new schema({
   name: {
     type: String,
@@ -104,34 +106,40 @@ const userSchema = new schema({
     minlength: [8, "Minimum password length is 8 characters"],
   },
 });
+
+// Encrypting the password pre-saving it
 userSchema.pre("save", async function (next) {
   const hash = await bcrypt.hash(this.password, 10);
   this.password = hash;
   console.log(hash);
   next();
 });
+
+// Comparing method for the clear text password and the encrypted one
 userSchema.methods.isValidPassword = async function (password) {
   console.log(await bcrypt.compare(password, this.password));
   return await bcrypt.compare(password, this.password);
 };
+
 const userModel = mongoose.model("User", userSchema);
 userModel.createCollection().then(function (collection) {
   console.log("Collection is created!");
 });
 
-//parser for body
+// Body parser
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//inserts an object to my mongo
+// Inserts an object to my mongo
 async function addAnObject(myObject) {
   myObject.save(function (err) {
     if (err) console.log(err);
     console.log(myObject);
   });
 }
-// decode the token
+
+// Decode-ing the token
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 const jwtOptions = {
@@ -150,24 +158,20 @@ const strategy = new JwtStrategy(jwtOptions, async function (
   }
 });
 passport.use(strategy);
-
 app.use(passport.initialize());
-// get request for all data
-app.get(
-  "/",
-  // passport.authenticate("jwt", { session: false }),
-  async (request, response) => {
-    const destinationModel = mongoose.model("Destination", destinationSchema);
-    const destinations = await destinationModel.find({});
-    try {
-      response.send(destinations);
-    } catch (error) {
-      response.status(500).send(error);
-    }
-  }
-);
 
-//post request from create form
+// Get request for all destinations
+app.get("/", async (request, response) => {
+  const destinationModel = mongoose.model("Destination", destinationSchema);
+  const destinations = await destinationModel.find({});
+  try {
+    response.send(destinations);
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+// Post request for the Create form
 app.post("/", (req, res) => {
   res.status(200).json({ info: "we got POST request" });
   console.log(req.body);
@@ -179,13 +183,12 @@ app.post("/", (req, res) => {
     endDate: req.body.endDate,
     description: req.body.description,
     img: req.body.img,
-    // make Date.parse();
   });
 
   addAnObject(myObject).catch(console.dir);
 });
 
-// requests for Update form
+// Get request for the displaying the specific destination in the Update form
 app.get(
   "/:myID",
   passport.authenticate("jwt", { session: false }),
@@ -204,8 +207,9 @@ app.get(
     res.redirect(303, "auth/login");
   }
 );
+
+// Put request for updating the specific destination
 app.put("/:myID", function (req, res) {
-  console.log(req.params.myID);
   const destination = {
     name: req.body.name,
     location: req.body.location,
@@ -215,8 +219,6 @@ app.put("/:myID", function (req, res) {
     img: req.body.img,
   };
   destination._id = req.params.myID;
-
-  console.log(destination);
 
   const destinationModel = mongoose.model("Destination", destinationSchema);
   destinationModel.findOneAndUpdate(
@@ -229,7 +231,7 @@ app.put("/:myID", function (req, res) {
   );
 });
 
-// request for Deleting
+// Deleting a specific destination based on id
 app.delete("/:myID", function (req, res) {
   const destinationModel = mongoose.model("Destination", destinationSchema);
   destinationModel.findOneAndDelete({ _id: req.params.myID }, (err, result) => {
@@ -238,7 +240,7 @@ app.delete("/:myID", function (req, res) {
   });
 });
 
-// endpoint for Sign Up
+// Post request for creating a new user
 app.post("/auth/signup", (req, res) => {
   const user = new userModel({
     name: req.body.name,
@@ -249,37 +251,26 @@ app.post("/auth/signup", (req, res) => {
 
   user.save(function (err) {
     if (err) {
-      console.log(err);
-      console.log(user);
       res.status(400).json(err);
     } else {
-      res.status(200).json({ info: "we got POST request" });
+      res.status(200).json({ info: "POST request works" });
     }
   });
 });
 
+// Post request for log in
 app.post("/auth/login", (req, res) => {
-  console.log(req.body);
   userModel.findOne({ username: req.body.username }, async (err, user) => {
     if (err) {
-      console.log("test", err);
+      console.log(err);
     } else {
       const isValid = await bcrypt.compare(req.body.password, user.password);
-      console.log(isValid);
       if (isValid) {
         const token = jwt.sign({ _id: user._id }, process.env.jwt_secret);
-        console.log(token);
-
         res.status(200).json(token);
       }
     }
   });
-});
-
-// middlewear
-app.use((req, res, next) => {
-  req.username;
-  next();
 });
 
 app.listen(port, () => {

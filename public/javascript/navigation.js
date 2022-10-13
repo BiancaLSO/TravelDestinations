@@ -1,4 +1,3 @@
-// window.location.replace("/views/update.html?id=" + dest._id);
 document.querySelector("#home").addEventListener("click", () => {
   window.location.replace("/views/index.html");
 });

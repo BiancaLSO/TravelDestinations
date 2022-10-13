@@ -10,6 +10,7 @@ const url = "http://localhost:8082/";
 
 const tokenFromStorage = localStorage.getItem("token");
 
+// Get Id from Url
 function getIdFromUrl() {
   const location = window.location.toString();
   const splitQuestionmark = location.split("?");
@@ -18,6 +19,8 @@ function getIdFromUrl() {
   console.log(splitIdParam[1]);
   return splitIdParam[1];
 }
+
+// Fill in the update form
 function fillInTheForm(destination) {
   console.log(destination);
   document.querySelector("#name").value = destination.name;
@@ -31,14 +34,17 @@ function fillInTheForm(destination) {
   document.querySelector("#description").value = destination.description;
   document.querySelector("#img").src = destination.img;
 }
+
 const myform = document.querySelector("#updateForm");
-// validation on the client side
+
+// Validation on the client side for update form
 const nameInp = document.querySelector("#name");
 const nameError = document.querySelector("#name + span.error");
 const locationInp = document.querySelector("#location");
 const locationError = document.querySelector("#location + span.error");
 const descInp = document.querySelector("#description");
 const descError = document.querySelector("#description + span.error");
+
 nameInp.addEventListener("input", (event) => {
   if (nameInp.validity.valid) {
     nameError.textContent = "";
@@ -51,6 +57,7 @@ nameInp.addEventListener("input", (event) => {
     showErrorName();
   }
 });
+
 function showErrorName() {
   if (nameInp.validity.valueMissing) {
     nameError.textContent = "You need to enter a name.";
@@ -59,7 +66,8 @@ function showErrorName() {
   }
   nameError.className = "error active";
 }
-// validation for location
+
+// Validation for location
 locationInp.addEventListener("input", (event) => {
   if (locationInp.validity.valid) {
     locationError.textContent = "";
@@ -72,6 +80,7 @@ locationInp.addEventListener("input", (event) => {
     showErrorLocation();
   }
 });
+
 function showErrorLocation() {
   if (locationInp.validity.valueMissing) {
     locationError.textContent = "You need to enter a location.";
@@ -80,7 +89,8 @@ function showErrorLocation() {
   }
   locationError.className = "error active";
 }
-// validation for description
+
+// Validation for description
 descInp.addEventListener("input", (event) => {
   if (descInp.validity.valid) {
     descError.textContent = "";
@@ -93,6 +103,7 @@ descInp.addEventListener("input", (event) => {
     showErrorDesc();
   }
 });
+
 function showErrorDesc() {
   if (descInp.validity.valueMissing) {
     descError.textContent = "You need to write a short description.";
@@ -101,6 +112,7 @@ function showErrorDesc() {
   }
   descError.className = "error active";
 }
+
 myform.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (
@@ -130,6 +142,7 @@ myform.addEventListener("submit", async (event) => {
     }
   }
 });
+
 function clearForm() {
   document.querySelector("#name").value = "";
   document.querySelector("#location").value = "";
@@ -142,6 +155,8 @@ function clearForm() {
     document.querySelector("#confirmationModalUpdate").classList.add("hidden");
   }, "2000");
 }
+
+// Get specific destination based on Id
 async function getSpecificDestination(id) {
   console.log("i am in get destination");
   const response = await fetch(url + id);
@@ -150,6 +165,8 @@ async function getSpecificDestination(id) {
   console.log(body);
   return body;
 }
+
+// Update the destinations based on the specific
 async function putData(id, destination) {
   const response = await fetch(url + id, {
     method: "PUT",

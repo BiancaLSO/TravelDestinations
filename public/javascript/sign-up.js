@@ -1,5 +1,6 @@
 const url = "http://localhost:8082/";
-// validation
+
+// Validation
 const form = document.querySelector("#signUpForm");
 
 const nameInp = document.querySelector("#name");
@@ -11,9 +12,11 @@ const emailError = document.querySelector("#email+ span.error");
 const passwordInp = document.querySelector("#password");
 const passwordError = document.querySelector("#password+ span.error");
 const confirmPasswordInp = document.querySelector("#confirmpassword");
-const confirmPassworError = document.querySelector("#confirmpassword+ span.error");
+const confirmPassworError = document.querySelector(
+  "#confirmpassword+ span.error"
+);
 
-// validation for name
+// Validation for name
 nameInp.addEventListener("input", (event) => {
   if (nameInp.validity.valid) {
     nameError.textContent = "";
@@ -26,6 +29,7 @@ nameInp.addEventListener("input", (event) => {
     showErrorName();
   }
 });
+
 function showErrorName() {
   if (nameInp.validity.valueMissing) {
     nameError.textContent = "You need to enter a name.";
@@ -34,19 +38,17 @@ function showErrorName() {
   }
   nameError.className = "error active";
 }
-// validation for email
+
+// Validation for email
 emailInp.addEventListener("input", (event) => {
   if (emailInp.validity.valid) {
     emailError.textContent = "";
     emailError.className = "error";
-    // // make the first letter always uppercase
-    // let value = emailInp.value;
-    // let upperCaseValue = value.charAt(0).toUpperCase() + value.slice(1);
-    // emailInp.value = upperCaseValue;
   } else {
     showErrorEmail();
   }
 });
+
 function showErrorEmail() {
   if (emailInp.validity.valueMissing) {
     emailError.textContent = "You need to enter a name.";
@@ -57,10 +59,8 @@ function showErrorEmail() {
   }
   emailError.className = "error active";
 }
-// todo
-// validation for username , should be received from backend as well
 
-// validation for password
+// Validation for password
 passwordInp.addEventListener("input", (event) => {
   if (passwordInp.validity.valid) {
     passwordError.textContent = "";
@@ -73,6 +73,7 @@ passwordInp.addEventListener("input", (event) => {
     showErrorPassword();
   }
 });
+
 function showErrorPassword() {
   if (passwordInp.validity.valueMissing) {
     passwordError.textContent = "You need to enter a password.";
@@ -82,7 +83,7 @@ function showErrorPassword() {
   passwordError.className = "error active";
 }
 
-// validation for confirm password
+// Validation for confirm password
 confirmPasswordInp.addEventListener("input", (event) => {
   if (confirmPasswordInp.validity.valid) {
     confirmPassworError.textContent = "";
@@ -104,22 +105,27 @@ function showErrorConfirmPassword() {
   }
   confirmPassworError.className = "error active";
 }
+
 function checkPasswords() {
   if (passwordInp.value != confirmPasswordInp.value) {
-    confirmPassworError.textContent = "Does not match with the one introduced above";
+    confirmPassworError.textContent =
+      "Does not match with the one introduced above";
     confirmPassworError.className = "error active";
   } else {
     confirmPassworError.className = "error";
   }
 }
-// maybe change from click event to onsubmit event
+
 document.querySelector("#signUp").addEventListener("click", async (event) => {
   event.preventDefault();
   checkPasswords();
   // fix confirm password validation
-  if (!nameInp.validity.valid || !emailInp.validity.valid || confirmPassworError.className === "error active") {
-    console.log("an input is invalid");
-    // confirmPassworError.className = "error";
+  if (
+    !nameInp.validity.valid ||
+    !emailInp.validity.valid ||
+    confirmPassworError.className === "error active"
+  ) {
+    console.log("An input is invalid");
   } else {
     const user = {
       name: document.querySelector("#name").value,
@@ -141,6 +147,8 @@ document.querySelector("#signUp").addEventListener("click", async (event) => {
     }
   }
 });
+
+// Create a new user
 async function postUser(user) {
   console.log(user);
   const response = await fetch(url + "auth/signup", {

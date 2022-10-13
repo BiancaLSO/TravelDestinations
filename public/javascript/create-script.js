@@ -5,15 +5,16 @@ window.addEventListener("load", async (event) => {
 const form = document.querySelector("#createForm");
 const url = "http://localhost:8082/";
 
-// validation on the client side
-// const myForm = document.querySelector("#createForm");
+// Validation for the Client Side
+
 const nameInp = document.querySelector("#name");
 const nameError = document.querySelector("#name + span.error");
 const locationInp = document.querySelector("#location");
 const locationError = document.querySelector("#location + span.error");
 const descInp = document.querySelector("#description");
 const descError = document.querySelector("#description + span.error");
-// validation for name
+
+// Validation for name input
 nameInp.addEventListener("input", (event) => {
   if (nameInp.validity.valid) {
     nameError.textContent = "";
@@ -26,6 +27,7 @@ nameInp.addEventListener("input", (event) => {
     showErrorName();
   }
 });
+
 function showErrorName() {
   if (nameInp.validity.valueMissing) {
     nameError.textContent = "You need to enter a name.";
@@ -34,7 +36,8 @@ function showErrorName() {
   }
   nameError.className = "error active";
 }
-// validation for location
+
+// Validation for Location
 locationInp.addEventListener("input", (event) => {
   if (locationInp.validity.valid) {
     locationError.textContent = "";
@@ -47,6 +50,7 @@ locationInp.addEventListener("input", (event) => {
     showErrorLocation();
   }
 });
+
 function showErrorLocation() {
   if (locationInp.validity.valueMissing) {
     locationError.textContent = "You need to enter a location.";
@@ -55,10 +59,8 @@ function showErrorLocation() {
   }
   locationError.className = "error active";
 }
-// validation for date and image
-// @todo after Maria finishes
 
-// validation for description
+// Validation for Description
 descInp.addEventListener("input", (event) => {
   if (descInp.validity.valid) {
     descError.textContent = "";
@@ -71,6 +73,7 @@ descInp.addEventListener("input", (event) => {
     showErrorDesc();
   }
 });
+
 function showErrorDesc() {
   if (descInp.validity.valueMissing) {
     descError.textContent = "You need to write a short description.";
@@ -79,29 +82,38 @@ function showErrorDesc() {
   }
   descError.className = "error active";
 }
-// Submit event and posting the data
+
+// Submit event and post the data
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (!nameInp.validity.valid || !locationInp.validity.valid || !descInp.validity.valid) {
-    console.log("an input is invalid that is why not sending post");
-    // event.preventDefault();
+  if (
+    !nameInp.validity.valid ||
+    !locationInp.validity.valid ||
+    !descInp.validity.valid
+  ) {
+    console.log("This input is invalid");
   } else {
     const destination = {
       name: document.querySelector("#name").value,
       location: document.querySelector("#location").value,
-      startDate: new Date(document.querySelector("#startDate").value).toISOString().slice(0, 10),
-      endDate: new Date(document.querySelector("#endDate").value).toISOString().slice(0, 10),
+      startDate: new Date(document.querySelector("#startDate").value)
+        .toISOString()
+        .slice(0, 10),
+      endDate: new Date(document.querySelector("#endDate").value)
+        .toISOString()
+        .slice(0, 10),
       description: document.querySelector("#description").value,
       img: document.querySelector("#img").value,
     };
 
     const response = await postData(destination);
-    console.log(response);
     if (response.status === 200) {
       clearForm();
     }
   }
 });
+
+// Clears the form
 function clearForm() {
   document.querySelector("#name").value = "";
   document.querySelector("#location").value = "";
@@ -124,6 +136,7 @@ async function getData(e) {
   return response;
 }
 
+// Create a new destination
 async function postData(destination) {
   const response = await fetch(url, {
     method: "POST",
