@@ -102,24 +102,24 @@ function showErrorConfirmPassword() {
   } else if (confirmPasswordInp.validity.tooShort) {
     confirmPassworError.textContent = `Name should be at least ${confirmPasswordInp.minLength} characters, you entered ${confirmPasswordInp.value.length}`;
   }
-  // else if (passwordInp.value != confirmPasswordInp.value) {
-  //   confirmPassworError.textContent = "Password does not match with the one above";
-  // }
   confirmPassworError.className = "error active";
 }
 function checkPasswords() {
   if (passwordInp.value != confirmPasswordInp.value) {
     confirmPassworError.textContent = "Does not match with the one introduced above";
+    confirmPassworError.className = "error active";
+  } else {
+    confirmPassworError.className = "error";
   }
-  confirmPassworError.className = "error active";
 }
 // maybe change from click event to onsubmit event
 document.querySelector("#signUp").addEventListener("click", async (event) => {
   event.preventDefault();
   checkPasswords();
   // fix confirm password validation
-  if (!nameInp.validity.valid || !emailInp.validity.valid) {
+  if (!nameInp.validity.valid || !emailInp.validity.valid || confirmPassworError.className === "error active") {
     console.log("an input is invalid");
+    // confirmPassworError.className = "error";
   } else {
     const user = {
       name: document.querySelector("#name").value,
