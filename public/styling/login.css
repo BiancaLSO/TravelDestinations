@@ -8,7 +8,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('./bgforms.jpg');
     background-position: center;
     background-repeat: no-repeat;
     backdrop-filter: blur(2px);
@@ -63,7 +62,9 @@
     margin: 10px 0;
     padding: 20px;
     outline: none;
-    background: rgb(245, 243, 243);
+    border: 0.5px;
+    border-style: solid;
+    border-color: #f5595a;
     font-size: 14px;
   }
   

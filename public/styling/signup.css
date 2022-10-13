@@ -7,10 +7,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('./bgforms.jpg');
     background-repeat: no-repeat;
     backdrop-filter: blur(3px);
-    background-position: center;
   }
   
   
@@ -46,7 +44,9 @@
     margin: 10px 0;
     padding: 20px;
     outline: none;
-    background: rgb(245, 243, 243);
+    border: 0.5px;
+    border-style: solid;
+    border-color: #f5595a;
     font-size: 14px;
     border-radius: 4px;
   }
