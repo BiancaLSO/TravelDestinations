@@ -103,7 +103,7 @@ form.addEventListener("submit", async (event) => {
         .toISOString()
         .slice(0, 10),
       description: document.querySelector("#description").value,
-      img: document.querySelector("#img").value,
+
     };
 
     const response = await postData(destination);
@@ -120,7 +120,6 @@ function clearForm() {
   document.querySelector("#startDate").value = "";
   document.querySelector("#endDate").value = "";
   document.querySelector("#description").value = "";
-  document.querySelector("#img").value = "";
   document.querySelector("#confirmationModalCreate").classList.remove("hidden");
   setTimeout(() => {
     document.querySelector("#confirmationModalCreate").classList.add("hidden");

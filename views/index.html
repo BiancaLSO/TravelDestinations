@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
+     <link
       rel="stylesheet"
       type="text/css"
-      href="../public/styling/deletthis.css"
+      href="../public/styling/index.css"
     />
 
     <link
@@ -18,18 +18,61 @@
     <title>Travel Destinations</title>
   </head>
   <body>
-    <section id="navigation">
-      <button id="home">Home</button>
-      <button id="signUpBtn">Sign up</button>
-      <button id="create">Create</button>
-      <button id="logInBtn">Log in</button>
-      <button id="logOutBtn">Log out</button>
-    </section>
-    <h1>Here will be the list of all the travel destinations</h1>
+<div class="navigation">
+    <section id="navigatio_buttons">
+      <button id="home" class="nav">Home</button>
+      <button id="signUpBtn" class="nav">Sign up</button>
+      <button id="create" class="nav">Create</button>
+      <button id="logInBtn" class="nav">Log in</button>
+      <button id="logOutBtn" class="nav">Log out</button>
+      </section>
+      
+      <section class="logo">
+      <div class="img">
+        <img src="../public/styling/images/loco.svg"/>
+        </div>
+        <h1>my travel journal.</h1>
+      </section>
+       
+    </div>
+
+  
+   
     <div class="dest-list"></div>
 
     <template id="destination-card">
       <div class="mini-card" id="temp">
+
+        <div class="img-card">
+          <img id="imgDestination" />
+        </div>
+
+        <div class="card-info">
+          <i class="bi bi-pin" style="color:#F55A5A;"></i> <span id="locationDestination"></span>
+        <h2>
+          <span id="nameDestination"></span>
+        </h2>
+        <div class="dates">
+          <p id="startDateDestination"></p><span>-</span><p id="endDateDestination"></p>
+        </div>
+          <p id="descriptionDestination"></p>
+          
+  <div class="buttons">
+          <button id="edit-button" class="hideBtn" style="height: 3rem; width:3rem; border: none;">
+            <i class="bi bi-pencil-fill" style="color:blue; background-color: transparent; "></i>
+          </button>
+          <button id="delete-button" class="hideBtn" onclick="deleteMe(this)" style="height: 3rem; width:3rem; background-color: transparent; border: none;">
+            <i class="bi bi-trash" style="color: red; background-color: transparent;"></i>
+          </button>
+        </div>
+        </div>
+      </div>
+    </template>
+
+
+    <!-- <template id="destination-card">
+      <div class="mini-card" id="temp">
+        <img id="imgDestination" />
         <h3>
           <span id="nameDestination"></span>
           <span id="locationDestination"></span>
@@ -43,9 +86,10 @@
         <p id="startDateDestination"></p>
         <p id="endDateDestination"></p>
         <p id="descriptionDestination"></p>
-        <img id="imgDestination" />
+
       </div>
-    </template>
+    </template> -->
+
     <script src="/public/javascript/navigation.js"></script>
     <script src="../public/javascript/list-script.js"></script>
     <script src="/public/javascript/log-out.js"></script>

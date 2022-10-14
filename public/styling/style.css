@@ -4,43 +4,61 @@
   font-family: "inter", sans-serif;
 }
 
-body {
-  min-height: 100vh;
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
-  background-image: url("./bgforms.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+/* navigation */
+.navigation{
+  background-color: #F55A5A;
+  min-height: 55px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
-#content {
-  /* min-height: 100vh; */
+
+
+.nav{
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+}
+
+#navigatio_buttons{
   display: flex;
-  justify-content: center;
-  align-items: center;
-  /* background-image: url("./bgforms.jpg"); */
-  /* background-repeat: no-repeat; */
-  /* background-position: center; */
-  /* background-size: cover; */
+  flex-direction: row;
+  justify-content: left;
+  column-gap: 2rem;
+  margin-left: 2rem;
 }
+.logo{
+display: flex;
+flex-direction: row;
+column-gap: 1rem;
+color: white;
+align-self: center;
+margin-left: -6rem;
+
+}
+.logo h1{
+  margin-bottom: 0 !important;
+  color: white;
+  align-self: center;
+}
+
+
+
 form {
   display: flex;
   flex-direction: column;
-  width: 60%;
   justify-content: center;
-  background: rgb(210, 207, 206);
-  flex-direction: column;
+  border: 2px solid #F55A5A;
   padding: 2vw 4vw;
   width: 90%;
-  max-width: 600px;
+  height: 100%;
   border-radius: 10px;
 }
 
 #createFormContainer,
 #updateFormContainer {
   position: absolute;
-  top: 65%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -52,11 +70,11 @@ form input {
   padding: 12px 20px;
   margin: 10px 0;
   display: inline-block;
-  border: 0;
+  border: 2px solid rgb(210, 207, 206) !important;
   outline: none;
   border-radius: 4px;
   box-sizing: border-box;
-  background: rgb(245, 243, 243);
+
 }
 
 h1,
@@ -72,8 +90,7 @@ label {
   color: rgb(7, 7, 8);
 }
 
-input[type="submit"],
-#navigation button {
+input[type="submit"] {
   padding: 16px;
   background: rgb(7, 7, 8);
   color: white;
