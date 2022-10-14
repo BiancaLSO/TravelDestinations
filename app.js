@@ -204,12 +204,12 @@ app.get(
         }
       }
     );
-    res.redirect(303, "auth/login");
+    // res.redirect(303, "auth/login");
   }
 );
 
 // Put request for updating the specific destination
-app.put("/:myID", function (req, res) {
+app.put("/:myID", passport.authenticate("jwt", { session: false }), function (req, res) {
   const destination = {
     name: req.body.name,
     location: req.body.location,

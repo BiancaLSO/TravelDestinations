@@ -132,7 +132,6 @@ myform.addEventListener("submit", async (event) => {
         .toISOString()
         .slice(0, 10),
       description: document.querySelector("#description").value,
-      img: document.querySelector("#img").src,
     };
     const id = getIdFromUrl();
     const response = await putData(id, destination);
@@ -149,7 +148,6 @@ function clearForm() {
   document.querySelector("#startDate").value = "";
   document.querySelector("#endDate").value = "";
   document.querySelector("#description").value = "";
-  document.querySelector("#img").value = "";
   document.querySelector("#confirmationModalUpdate").classList.remove("hidden");
   setTimeout(() => {
     document.querySelector("#confirmationModalUpdate").classList.add("hidden");
@@ -159,8 +157,14 @@ function clearForm() {
 // Get specific destination based on Id
 async function getSpecificDestination(id) {
   console.log("i am in get destination");
-  const response = await fetch(url + id);
+  const response = await fetch(url + id, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${tokenFromStorage}`,},
+  });
   console.log(response);
+  
   const body = await response.json();
   console.log(body);
   return body;
