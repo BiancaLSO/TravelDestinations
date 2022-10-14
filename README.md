@@ -6,4 +6,4 @@
 
 # Run the project: $ node app.js
 
-#Run an nmp install in your terminal
+# Run an nmp install in your terminal
